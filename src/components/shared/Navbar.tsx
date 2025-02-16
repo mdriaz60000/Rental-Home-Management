@@ -1,7 +1,5 @@
-
-
 import { Heart, ShoppingBag } from "lucide-react";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import Logo from "@/app/assets/svg/Logo";
 
 export default function Navbar() {

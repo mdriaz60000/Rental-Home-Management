@@ -1,5 +1,6 @@
 
 
+
 import Banner from '@/components/shared/Banner/Banner';
 import PopularPlaces from '@/components/shared/PopularPlaces/PopularPlaces';
 import PopularProperties from '@/components/shared/PopularPropaties/PopularPropaties';
@@ -17,6 +18,7 @@ const HomePage = () => {
           <PopularPlaces/>
           <WhyChooseUs/>
           <Testimonials/>
+          
           
        
           

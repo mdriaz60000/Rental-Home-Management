@@ -1,7 +1,5 @@
 
-
-import Logo from "@/app/assets/svg/Logo";
-import { Facebook, Instagram, X } from "lucide-react";
+import { Facebook, Home, Instagram, X } from "lucide-react";
 import Link from "next/link";
 
 const Footer = () => {
@@ -26,8 +24,8 @@ const Footer = () => {
         <div className="flex flex-col items-center mb-6">
           <div className="flex items-center space-x-2">
             <h1 className="text-2xl font-black flex items-center">
-              <Logo />
-              Next Mart
+              <Home />
+             Khan Home
             </h1>
           </div>
           <p className="text-gray-600 mt-3 w-1/2">

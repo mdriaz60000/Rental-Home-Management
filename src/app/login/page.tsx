@@ -1,11 +1,12 @@
-import React from 'react';
 
-const page = () => {
+
+
+const LoginPage = () => {
     return (
-        <div>
-            
+        <div className='  w-screen h-screen flex justify-center'>
+         
         </div>
     );
 };
 
-export default page;
+export default LoginPage;

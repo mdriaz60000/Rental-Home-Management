@@ -1,9 +1,18 @@
+
+
+import Banner from '@/components/shared/Banner/Banner';
+import PopularProperties from '@/components/shared/PopularPropaties/PopularPropaties';
+
+
+
 import React from 'react';
 
 const HomePage = () => {
     return (
         <div>
-            <p>well come next mert</p>
+          <Banner />
+          <PopularProperties/>
+          
         </div>
     );
 };

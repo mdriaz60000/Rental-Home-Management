@@ -1,0 +1,22 @@
+{
+   "service" : [
+    {
+      "id" : "1",
+      "img" : "https://img.freepik.com/premium-vector/real-estate-logo-design-concept_761413-6411.jpg?uid=R110004738&ga=GA1.1.1584261188.1697473840&semt=ais_hybrid",
+      "title": "House Rent"  ,
+      "details" : "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, libero! Ex, officiis iste hic fugit qui, deleniti ab debitis error voluptatum unde voluptas praesentium saepe consectetur"
+    },
+    {
+      "id" : "2",
+      "img" : "https://img.freepik.com/free-psd/real-estate-logo-design_23-2151249799.jpg?uid=R110004738&ga=GA1.1.1584261188.1697473840&semt=ais_hybrid",
+      "title": "Appertment Sell"  ,
+      "details" : "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, libero! Ex, officiis iste hic fugit qui, deleniti ab debitis error voluptatum unde voluptas praesentium saepe consectetur."
+    },
+    {
+      "id" : "3",
+      "img" : "https://img.freepik.com/free-vector/hand-drawn-nerd-logo-template_23-2149199408.jpg?uid=R110004738&ga=GA1.1.1584261188.1697473840&semt=ais_hybrid",
+      "title": "Agent Find"  ,
+      "details" : "  Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed, libero! Ex, officiis iste hic fugit qui, deleniti ab debitis error voluptatum unde voluptas praesentium saepe consectetur"
+    }
+   ]
+  }

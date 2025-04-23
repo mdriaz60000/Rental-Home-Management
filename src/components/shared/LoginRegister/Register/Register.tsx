@@ -12,15 +12,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useAppDispatch } from "@/redux/hooks";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
 
 
 // Enhanced password validation
 const passwordValidation = z.string()
-  .min(8, "Password must be at least 8 characters")
-  .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-  .regex(/[a-z]/, "Must contain at least one lowercase letter")
-  .regex(/[0-9]/, "Must contain at least one number")
-  .regex(/[^A-Za-z0-9]/, "Must contain at least one special character");
+  .min(6, "Password must be at least 6 characters")
+  // .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+  // .regex(/[a-z]/, "Must contain at least one lowercase letter")
+  // .regex(/[0-9]/, "Must contain at least one number")
+  // .regex(/[^A-Za-z0-9]/, "Must contain at least one special character");
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -32,8 +35,11 @@ const formSchema = z.object({
   path: ["confirmPassword"],
 });
 
-export default function RegisterPage() {
+export default function Register() {
   const router = useRouter();
+    const [register] = useRegisterMutation()
+    const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,37 +50,16 @@ export default function RegisterPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: values.name,
-          email: values.email,
-          password: values.password,
-        }),
-      });
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+  console.log(data)
+    const res = await register(data).unwrap()
+    console.log(res)
 
-      const data = await response.json();
+    dispatch(setUser({user: res.data.accessUser, token: res.data.accessToken}))
 
-      if (response.ok) {
-        toast.success("Registration Successful", {
-          description: "You can now sign in to your account",
-        });
-        router.push("/login");
-      } else {
-        toast.error("Registration Failed", {
-          description: data.message || "Something went wrong",
-        });
-      }
-    } catch (error) {
-      toast.error("Registration Failed", {
-        description: "Network error occurred",
-      });
-    }
+    
+      toast.success("Login Successful");
+      router.push("/");
   }
 
   return (
@@ -179,7 +164,7 @@ export default function RegisterPage() {
             <Button 
               variant="outline" 
               className="h-12 gap-2"
-              onClick={() => signIn("google")}
+             
             >
               {/* <Google className="h-5 w-5" /> */}
               Continue with Google
@@ -188,7 +173,7 @@ export default function RegisterPage() {
             <Button 
               variant="outline" 
               className="h-12 gap-2"
-              onClick={() => signIn("github")}
+            
             >
               {/* <Github className="h-5 w-5" /> */}
               Continue with GitHub

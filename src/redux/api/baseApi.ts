@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
 // 
-const baseQuery = fetchBaseQuery({ baseUrl:"http://localhost:5000/api/v1",
+const baseQuery = fetchBaseQuery({ baseUrl:process.env.NEXT_PUBLIC_BASE_API,
   credentials : "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token
@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({ baseUrl:"http://localhost:5000/api/v1",
     return headers
   },
   })
-  // console.log(import.meta.env.mainApi )
+ 
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',

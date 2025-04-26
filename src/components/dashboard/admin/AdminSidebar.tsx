@@ -13,7 +13,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-gray-800 text-white p-4">
+    <div className="w-64 bg-indigo-800 text-white p-4">
       <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
       <nav>
         <ul className="space-y-2">

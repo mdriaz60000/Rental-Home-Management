@@ -1,4 +1,4 @@
-"use client";
+
 
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -88,7 +88,7 @@ const Testimonials = () => {
                   ))}
                 </div>
                 
-                <p className="text-gray-700 mb-3 italic">"{testimonial.content}"</p>
+                <p className="text-gray-700 mb-3 italic">{testimonial.content}</p>
                 <p className="text-sm text-gray-500">{testimonial.location}</p>
               </CardContent>
             </Card>

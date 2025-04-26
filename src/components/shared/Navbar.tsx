@@ -41,8 +41,8 @@ const Navbar = () => {
             <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">
               About Us
             </Link>
-            <Link href="/properties" className="text-sm font-medium hover:text-primary transition-colors">
-              All Listings
+            <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+             Contact Us
             </Link>
 
             {user  ? (

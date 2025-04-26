@@ -53,7 +53,7 @@ export default function Register() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
   console.log(data)
     const res = await register(data).unwrap()
-    console.log(res)
+    
 
     dispatch(setUser({user: res.data.accessUser, token: res.data.accessToken}))
 

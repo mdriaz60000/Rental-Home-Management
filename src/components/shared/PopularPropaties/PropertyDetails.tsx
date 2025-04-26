@@ -23,8 +23,7 @@ interface Property {
 const PropertyDetails = ({ propertyId }: { propertyId: string }) => {
   const { data, error, isLoading } = useGetPropertyQuery(undefined);
   const [property, setProperty] = useState<Property | null>(null);
-  console.log(data)
-  console.log("id", propertyId)
+ 
 
   useEffect(() => {
     if (data?.success && data.data?.length && propertyId) {

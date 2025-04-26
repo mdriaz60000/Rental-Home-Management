@@ -50,13 +50,17 @@ export default function Login() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data)
     const res = await login(data).unwrap()
-    console.log(res)
-
+    // console.log(res)
+   try{
     dispatch(setUser({user: res.data.accessUser, token: res.data.accessToken}))
+    // console.log(res.data.accessUser)
 
-    
       toast.success("Login Successful");
-      router.push("/");
+      router.push("/"); 
+   }catch(err){
+    console.log(err,"error data")
+   }
+   
     
   }
 

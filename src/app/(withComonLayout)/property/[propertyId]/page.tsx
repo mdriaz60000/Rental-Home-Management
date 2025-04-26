@@ -3,7 +3,7 @@ import PropertyDetails from "@/components/shared/PopularPropaties/PropertyDetail
 
 const PropertyDetailsPage = async ({params}: {params: Promise<{propertyId: string}>}) => {
     const {propertyId} = await params
-     console.log(propertyId)
+     
     return (
         <div>
          <PropertyDetails propertyId={propertyId}/>

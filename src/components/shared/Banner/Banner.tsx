@@ -21,51 +21,35 @@ const Banner = () => {
       
       <div className="container relative z-10 mx-auto px-4 text-center">
         {/* Headings */}
-        <p className="text-lg font-medium text-white">We Live Over Million Properties For You</p>
+        <p className="text-lg font-medium text-white">Find Your Perfect Rental House Today!</p>
         <h1 className="my-4 text-4xl font-bold text-white md:text-5xl lg:text-6xl">
           Find Your <br />
           <span className="text-primary">Dream Home</span>
         </h1>
 
-        {/* Tabs */}
-        <div className="my-6 flex justify-center space-x-4">
-          <Button variant="secondary" className="px-8 py-6 text-lg font-semibold">
-            For Sale
-          </Button>
-          <Button variant="secondary" className="px-8 py-6 text-lg font-semibold">
-            For Rent
-          </Button>
-        </div>
-
+  
         {/* Search Form */}
         <div className="mx-auto max-w-4xl rounded-lg bg-white p-4 shadow-lg">
           <div className="flex flex-col gap-4 md:flex-row">
             <Input
-              placeholder="Enter Keyword..."
+              placeholder="Number of bedrooms"
               className="h-14 text-lg"
             />
             
-            <Select>
-              <SelectTrigger className="h-14 text-lg">
-                <SelectValue placeholder="Property Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="house">House</SelectItem>
-                <SelectItem value="apartment">Apartment</SelectItem>
-                <SelectItem value="villa">Villa</SelectItem>
-                <SelectItem value="office">Office</SelectItem>
-              </SelectContent>
-            </Select>
+            <Input
+              placeholder="Price Range"
+              className="h-14 text-lg"
+            />
             
             <Select>
               <SelectTrigger className="h-14 text-lg">
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="new-york">New York</SelectItem>
-                <SelectItem value="los-angeles">Los Angeles</SelectItem>
-                <SelectItem value="chicago">Chicago</SelectItem>
-                <SelectItem value="miami">Miami</SelectItem>
+                <SelectItem value="new-york">Gulsan</SelectItem>
+                <SelectItem value="los-angeles">Mohakali</SelectItem>
+                <SelectItem value="chicago">Danmondi</SelectItem>
+                <SelectItem value="miami">Malibag</SelectItem>
               </SelectContent>
             </Select>
             

@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏡 Rental Homes Management System
 
-## Getting Started
+  (https://i.ibb.co.com/351dfZgM/image.png)
+  
+A full-stack rental housing platform with role-based access for Admins, Landlords, and Tenants.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Core Features
+- **Property Management**
+  - Add/edit/delete rental properties (houses, apartments, etc.)
+  - Track property details (address, amenities, photos)
+  - Categorize properties by type, size, or location
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Tenant Management**
+  - Tenant profiles with contact information
+  - Lease agreement tracking
+  - Document storage (IDs, contracts)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Lease & Contract Management**
+  - Digital lease agreements
+  - Automated lease expiration reminders
+  - Customizable contract templates
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Payment System**
+  - Online rent collection
+  - Payment history tracking
+  - Late payment reminders
+  - Receipt generation
 
-## Learn More
+- **Maintenance Tracking**
+  - Tenant maintenance requests
+  - Work order management
+  - Vendor/supplier coordination
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
+Frontend: React.js, Nextjs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Backend: Node.js, Express.js
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Database: MongoDB, Mongoose
 
-## Deploy on Vercel
+Authentication: JSON Web Tokens (JWT)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

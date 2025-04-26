@@ -1,15 +1,16 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Property } from '@/type';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 const PropertyPages = async () => {
-    const res = await fetch("http://localhost:5000/api/v1/property", {
-        next: {
-          revalidate: 30,
-        },
-      });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/property`, {
+    next: {
+        revalidate: 30,
+    },
+});
       const text = await res.text();
       const data = JSON.parse(text);
       console.log(data)
@@ -21,7 +22,7 @@ const PropertyPages = async () => {
          </div>
          
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-           {data?.data.map((property) => (
+           {data?.data.map((property : Property ) => (
              <div key={property._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                {/* Property Image - You might want to add a default image if img[0] is not available */}
                <div className="relative h-48 w-full bg-gray-100">

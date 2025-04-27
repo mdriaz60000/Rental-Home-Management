@@ -11,7 +11,9 @@ const authRoutes = ["/login", "/register"];
 
 const roleBasedPrivateRoutes = {
   user: [/^\/user/],
-  admin: [/^\/admin/],
+  // admin: [/^\/admin/],
+  // landlord: [/^\/landlord/],
+  // tenant: [/^\/tenant/],
 }  ;
 
 export const middleware = async (request: NextRequest) => {
@@ -49,9 +51,13 @@ export const middleware = async (request: NextRequest) => {
 export const config = {
   matcher: [
 
-    "/admin",
-    "/admin/:page",
-    "/user",
-    "/user/:page",
+    // "/admin",
+    // "/admin/:page",
+    // "/user",
+    // "/user/:page",
+    // "/landlord",
+    // "/landlord/:page",
+    // "/tenant",
+    // "/tenant/:page",
   ],
 };

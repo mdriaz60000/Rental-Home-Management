@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useGetPropertyQuery } from "@/redux/features/CommonApi/ListingApi";
+import RentRequestForm from "./RentRequest";
 
 interface Property {
   _id: string;
@@ -128,14 +129,18 @@ const PropertyDetails = ({ propertyId }: { propertyId: string }) => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
+        {/* <div className="flex flex-col sm:flex-row gap-4">
           <Button className="bg-blue-600 hover:bg-blue-700 flex-1 py-6 text-lg">
             Contact Agent
           </Button>
           <Button variant="outline" className="flex-1 py-6 text-lg border-blue-600 text-blue-600 hover:bg-blue-50">
             Schedule Visit
           </Button>
+        </div> */}
+        <div>
+    <RentRequestForm></RentRequestForm>
         </div>
+        {/* //last */}
       </div>
     </div>
   );

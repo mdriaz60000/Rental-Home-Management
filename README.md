@@ -1,6 +1,6 @@
 # 🏡 Rental Homes Management System
 
-  (https://i.ibb.co.com/351dfZgM/image.png)
+  ![Rental homes](https://i.ibb.co.com/351dfZgM/image.png)
   
 A full-stack rental housing platform with role-based access for Admins, Landlords, and Tenants.
 

@@ -4,7 +4,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -39,6 +39,8 @@ export default function Register() {
   const router = useRouter();
     const [register] = useRegisterMutation()
     const dispatch = useAppDispatch();
+     const searchParams = useSearchParams();
+      const redirectUrl = searchParams.get('redirectUrl') || '/';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,7 +61,7 @@ export default function Register() {
 
     
       toast.success("Login Successful");
-      router.push("/");
+      router.push(redirectUrl); 
   }
 
   return (

@@ -1,11 +1,11 @@
 'use client';
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from '@/components/ui/dropdown-menu';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
@@ -41,7 +41,7 @@ export default function AdminSidebar() {
               Listing Management
             </Link>
           </li>
-          <li>
+          {/* <li>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
@@ -74,7 +74,7 @@ export default function AdminSidebar() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </div>

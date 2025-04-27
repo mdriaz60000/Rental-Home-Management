@@ -1,3 +1,4 @@
+import ListingManagement from "@/components/dashboard/admin/ListingMangement";
 
 
 
@@ -6,8 +7,8 @@ export default async function AdminListingsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">Listing Management</h1>
-      {/* <ListingTable listings={listings} /> */}
+      
+     <ListingManagement />
     </div>
   );
 }

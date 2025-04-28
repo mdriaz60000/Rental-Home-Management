@@ -12,9 +12,21 @@ export default function LandlordSidebar() {
         <ul className="space-y-2">
           <li>
             <Link
-              href="/landlord/listings"
+              href="/landlord/addListing"
               className={`block p-2 rounded ${
                 pathname.startsWith('/landlord/listings') 
+                  ? 'bg-indigo-700' 
+                  : 'hover:bg-indigo-700'
+              }`}
+            >
+              Add Listings
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/landlord/myListing"
+              className={`block p-2 rounded ${
+                pathname.startsWith('/landlord/myListing') 
                   ? 'bg-indigo-700' 
                   : 'hover:bg-indigo-700'
               }`}

@@ -46,6 +46,15 @@ export default function LandlordSidebar() {
               Rental Requests
             </Link>
           </li>
+          <br />
+          <li>
+            <Link
+              href="/"
+              className="block p-2 rounded hover:bg-indigo-700"   
+            >
+              Back To Home
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

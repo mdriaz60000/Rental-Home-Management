@@ -1,5 +1,6 @@
 export type MyListing = {
   id: string;
+  _id: string;
   title: string;
   description: string;
   squareFeet: number;
@@ -9,4 +10,5 @@ export type MyListing = {
   amenities: string[];
   images: string[];
   createdAt: string;
+  status : boolean
 };

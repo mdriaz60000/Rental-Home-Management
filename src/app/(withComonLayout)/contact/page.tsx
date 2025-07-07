@@ -1,7 +1,10 @@
 // app/contact/page.tsx
+
+import { Button } from '@/components/ui/button';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 
-export default function ContactPage() {
+export default async function  ContactPage () {
+   
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -18,13 +21,13 @@ export default function ContactPage() {
         {/* Contact Methods Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <ContactCard
-            icon={<Mail className="h-6 w-6" />}
+            icon={<Mail className="h-6 w-6 " />}
             title="Email"
             description="Drop us a line"
             contact="hello@example.com"
           />
           <ContactCard
-            icon={<Phone className="h-6 w-6" />}
+            icon={<Phone className="h-6 w-6 " />}
             title="Phone"
             description="Call us directly"
             contact="+1 (555) 123-4567"
@@ -103,16 +106,17 @@ export default function ContactPage() {
                   <textarea
                     id="message"
                     rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="Your message here..."
                   ></textarea>
                 </div>
-                <button
+                <Button
                   type="submit"
-                  className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  className="w-full sm:w-auto px-6 py-3text-white font-medium rounded-md
+                  focus:outline-none focus:ring-2  focus:ring-offset-2"
                 >
                   Send Message
-                </button>
+                </Button>
               </form>
             </div>
 
@@ -151,7 +155,7 @@ function ContactCard({
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
       <div className="flex items-start space-x-4">
-        <div className="p-3 bg-blue-100 rounded-full text-blue-600">
+        <div className="p-3 bg-blue-100 rounded-full text-primary">
           {icon}
         </div>
         <div>

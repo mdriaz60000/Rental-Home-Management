@@ -25,19 +25,19 @@ import { Separator } from "@/components/ui/separator";
 
 import { toast } from "sonner";
 import Link from "next/link";
-import { useLoginMutation } from "@/redux/features/auth/authApi";
-import { useAppDispatch } from "@/redux/hooks";
-import { setUser } from "@/redux/features/auth/authSlice";
+
+import { loginUser } from "@/service/authService";
+import { useUser } from "@/context/UserContext";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 8 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export default function Login() {
+
+  const { refetch } = useUser();
   const router = useRouter();
-  const [login] = useLoginMutation()
-  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get('redirectUrl') || '/';
 
@@ -50,19 +50,17 @@ export default function Login() {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data)
-    const res = await login(data).unwrap()
-    // console.log(res)
-    
-
-// After successful login:
-
+    // console.log(data)
    try{
-    dispatch(setUser({user: res.data.accessUser, token: res.data.accessToken}))
-    // console.log(res.data.accessUser)
-
+   
+    const res = await loginUser(data)
+    if (res.success) {
       toast.success("Login Successful");
+       await refetch?.()
       router.push(redirectUrl); 
+      
+    }
+
    }catch(err){
     console.log(err,"error data")
    }
@@ -138,6 +136,16 @@ export default function Login() {
             </form>
           </Form>
 
+            <div className="mt-6 text-center text-sm">
+            Do not have an account?
+            <Link 
+              href="/register" 
+              className="text-primary hover:underline"
+            >
+              Sign up
+            </Link>
+          </div>
+
           <div className="my-6 flex items-center">
             <Separator className="flex-1" />
             <span className="px-4 text-sm text-muted-foreground">OR</span>
@@ -164,15 +172,7 @@ export default function Login() {
             </Button>
           </div>
 
-          <div className="mt-6 text-center text-sm">
-            Do not have an account?
-            <Link 
-              href="/register" 
-              className="text-primary hover:underline"
-            >
-              Sign up
-            </Link>
-          </div>
+
         </CardContent>
       </Card>
     </div>

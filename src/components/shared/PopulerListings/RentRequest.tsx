@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { format } from "date-fns";
 import { useRouter, usePathname } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,59 +21,75 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { CalendarIcon } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
-import { useAppSelector } from "@/redux/hooks";
-import { useCurrentUser } from "@/redux/features/auth/authSlice";
+import { useUser } from "@/context/UserContext";
+import { rentalRequest } from "@/service/rentalRequest";
+import { IListing } from "@/type";
 
 const FormSchema = z.object({
   phone: z.string({
-    required_error: "Phone number is required"
+    required_error: "Phone number is required",
   }).min(10, "Phone number must be at least 10 characters"),
   moveInDate: z.date({
     required_error: "A move-in date is required.",
   }),
-  duration: z.enum(["1", "3", "6", "12"], {
+  duration: z.string( {
     required_error: "Please select a rental duration.",
   }),
 });
 
-export default function RentRequestForm() {
+export default function RentRequestForm({ listings }: { listings: IListing }) {
+   const listingsId = listings._id;
+  
   const router = useRouter();
   const pathname = usePathname();
-  const user = useAppSelector(useCurrentUser);
+  const user = useUser();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       phone: "",
       moveInDate: undefined,
-      duration: undefined,
+      duration:"",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (!user) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const rentId = user.user?.userId;
+
+    if (!user || !rentId) {
       toast.error("You must be logged in to submit a rent request");
       router.push(`/login?redirectUrl=${encodeURIComponent(pathname)}`);
       return;
     }
-   
-    console.log(data);
-    toast.success("Rent request submitted successfully!");
+
+    const formData = {
+      ...data,
+      rentId,
+      listingsId,
+      listings
+    };
+console.log(formData)
+    const result = await rentalRequest(formData);
+
+    if (result.success) {
+      toast.success("Rent request submitted successfully!");
+    } else {
+      toast.error(result.error || "Failed to submit rent request.");
+    }
   }
 
   return (
     <div className="max-w-2xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Month-to-Month Rent Request</h1>
-      
+
       {!user && (
         <div className="mb-6 p-4 bg-yellow-50 border-l-4 border-yellow-400">
           <p className="text-yellow-700">
             You need to be logged in to submit a rent request. Please login or register to continue.
           </p>
-          <Button 
+          <Button
             onClick={() => router.push(`/login?redirectUrl=${encodeURIComponent(pathname)}`)}
             className="mt-2"
             variant="outline"
@@ -99,9 +114,9 @@ export default function RentRequestForm() {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="(123) 456-7890" 
-                      {...field} 
+                    <Input
+                      placeholder="(123) 456-7890"
+                      {...field}
                       disabled={!user}
                     />
                   </FormControl>
@@ -151,48 +166,33 @@ export default function RentRequestForm() {
             />
           </div>
 
-          <FormField
-            control={form.control}
-            name="duration"
-            render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel>Rental Duration</FormLabel>
-                <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="grid grid-cols-2 md:grid-cols-4 gap-4"
-                    disabled={!user}
-                  >
-                    {["1", "3", "6", "12"].map((value) => (
-                      <FormItem
-                        key={value}
-                        className="flex items-center space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <RadioGroupItem value={value} />
-                        </FormControl>
-                        <FormLabel className="font-normal">
-                          {value} {value === "1" ? "Month" : "Months"}
-                        </FormLabel>
-                      </FormItem>
-                    ))}
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+             <FormField
+              control={form.control}
+              name="duration"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rental Duration</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="month"
+                      {...field}
+                      disabled={!user}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
           <Button
             type="submit"
             className="w-full"
             disabled={form.formState.isSubmitting || !user}
           >
-            {form.formState.isSubmitting 
-              ? "Submitting..." 
-              : user 
-                ? "Submit Rent Request" 
+            {form.formState.isSubmitting
+              ? "Submitting..."
+              : user
+                ? "Submit Rent Request"
                 : "Please Login to Submit"}
           </Button>
         </form>

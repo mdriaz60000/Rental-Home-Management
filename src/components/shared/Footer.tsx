@@ -56,19 +56,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-bold mb-6 text-primary">Newsletter</h3>
             <p className="mb-4">Subscribe to get updates on new properties and real estate news</p>
-            <form className="flex gap-2">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="flex-1 bg-gray-800 border border-gray-700 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <button 
-                type="submit" 
-                className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
+ 
             
             {/* Social Media */}
             <div className="mt-6">

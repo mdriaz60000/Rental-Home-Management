@@ -1,48 +1,40 @@
-
-
 import { NextRequest, NextResponse } from "next/server";
-import { getCurrentUser } from "./service/authService";
+// import { getCurrentUser } from "./service/authService/cookietoken";
+ import { getCurrentUser } from '@/service/authService';
 
 
-type Role = keyof typeof roleBasedPrivateRoutes;
+type Role = "admin" | "landlord" | "tenant" | "user";
 
 
-const authRoutes = ["/login", "/register"];
-
-const roleBasedPrivateRoutes = {
-  user: [/^\/user/],
+const roleBasedPrivateRoutes: Record<Role, RegExp[]> = {
   admin: [/^\/admin/],
   landlord: [/^\/landlord/],
   tenant: [/^\/tenant/],
-}  ;
+  user: [/^\/user/],
+};
+
+const authRoutes = ["/login", "/register"];
 
 export const middleware = async (request: NextRequest) => {
   const { pathname } = request.nextUrl;
-  const {userInfo} = await getCurrentUser(request)
-  console.log(userInfo)
+  const user = await getCurrentUser();
 
- 
-
-  if (!userInfo) {
+  if (!user) {
     if (authRoutes.includes(pathname)) {
       return NextResponse.next();
     } else {
       return NextResponse.redirect(
-        new URL(
-          `/login?redirectPath=${pathname}`,
-          request.url
-        )
+        new URL(`/login?redirectPath=${pathname}`, request.url)
       );
     }
   }
 
-  
+  const role = user?.role as Role;
 
-  if (userInfo?.role && roleBasedPrivateRoutes[userInfo?.role as Role]) {
-    const routes = roleBasedPrivateRoutes[userInfo?.role as Role];
-    if (routes.some((route) => pathname.match(route))) {
-      return NextResponse.next();
-    }
+  const routes = roleBasedPrivateRoutes[role];
+
+  if (routes?.some((route) => pathname.match(route))) {
+    return NextResponse.next();
   }
 
   return NextResponse.redirect(new URL("/", request.url));
@@ -50,14 +42,9 @@ export const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
-
-    "/admin",
-    "/admin/:page",
-    "/user",
-    "/user/:page",
-    "/landlord",
-    "/landlord/:page",
-    "/tenant",
-    "/tenant/:page",
+    "/admin/:path*",
+    "/user/:path*",
+    "/landlord/:path*",
+    "/tenant/:path*",
   ],
 };

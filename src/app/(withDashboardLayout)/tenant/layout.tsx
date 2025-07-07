@@ -1,4 +1,6 @@
+import NavbarPage from "@/app/(withComonLayout)/navbar/page";
 import TenantSidebar from "@/components/dashboard/tenant/TenantSidebar";
+
 
 
 export default function TenantLayout({
@@ -7,11 +9,15 @@ export default function TenantLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <>
+    <NavbarPage/>
+        <div className="flex h-screen bg-gray-100">
       <TenantSidebar />
       <div className="flex-1 overflow-auto p-6">
         {children}
       </div>
     </div>
+    </>
+
   );
 }

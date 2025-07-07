@@ -1,7 +1,8 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, ControllerRenderProps } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,40 +16,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
-import { toast } from "@/hooks/use-toast";
-import { useAddListingsMutation } from "@/redux/features/landlordApi/listingsApiLandlord";
-import { useAppSelector } from "@/redux/hooks";
-import { useCurrentUser } from "@/redux/features/auth/authSlice";
+// import { toast } from "@/hooks/use-toast";
+import { useUser } from "@/context/UserContext";
+import { addListings } from "@/service/landlord";
+import { formSchema } from "./AddValidationListings";
 
 
-// 1. Form Schema
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  squareFeet: z.coerce.number().min(1, "Square footage must be at least 1"),
-  location: z.string().min(1, "Location is required"),
-  rentAmount: z.coerce.number().min(1, "Rent amount must be at least 1"),
-  bedrooms: z.coerce.number().min(0, "Bedrooms cannot be negative"),
-  amenities: z.array(z.string()).optional(),
-  images: z.array(z.string().url("Must be a valid URL")).min(1, "At least one image is required"),
-});
 
-// 2. Infer the type
 type AddListingFormValues = z.infer<typeof formSchema>;
 
-interface CurrentUser {
-  userId: string;
-
-}
-
-
 export function AddListing() {
-
-  const [addListings] = useAddListingsMutation()
-  const user  = useAppSelector(useCurrentUser) as CurrentUser | null;
-  const userId: string | undefined = user?.userId;
- 
-
+  const user = useUser();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<AddListingFormValues>({
@@ -70,17 +48,35 @@ export function AddListing() {
     try {
       const listingData = {
         ...values,
-         landlordId: userId
+        landlordId: user?.user?.userId,
+        status: "pending", // Add default status
+        isAvailable: true // Add default availability
       };
-      // console.log(listingData)
+    console.log(listingData)
+      const result = await addListings(listingData);
+      console.log(result)
+      
 
-      await addListings(listingData).unwrap();
-      toast({
-        title: "Success",
-        description: "Listing created successfully",
-      });
-      form.reset();
- 
+      // if (result.success) {
+      //   toast({
+      //     title: "Success",
+      //     description: "Listing created successfully",
+      //     variant: "default",
+      //   });
+      //   form.reset();
+      // } else {
+      //   toast({
+      //     title: "Error",
+      //     description: result.message || "Failed to create listing",
+      //     variant: "destructive",
+      //   }); 
+      // }
+    // } catch (error: any) {
+    //   toast({
+    //     title: "Error",
+    //     description: "An unexpected error occurred",
+    //     variant: "destructive",
+    //   });
     } finally {
       setIsSubmitting(false);
     }
@@ -112,14 +108,18 @@ export function AddListing() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Textarea placeholder="Describe your property in detail" {...field} />
+                <Textarea 
+                  placeholder="Describe your property in detail" 
+                  {...field} 
+                  rows={5}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        {/* Grid for squareFeet, rentAmount, bedrooms, location */}
+        {/* Grid for numeric inputs */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             control={form.control}
@@ -128,7 +128,12 @@ export function AddListing() {
               <FormItem>
                 <FormLabel>Square Feet</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="0" {...field} />
+                  <Input 
+                    type="number" 
+                    min="1"
+                    placeholder="0" 
+                    {...field} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +147,12 @@ export function AddListing() {
               <FormItem>
                 <FormLabel>Rent Amount ($)</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="0" {...field} />
+                  <Input 
+                    type="number" 
+                    min="1"
+                    placeholder="0" 
+                    {...field} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,7 +166,12 @@ export function AddListing() {
               <FormItem>
                 <FormLabel>Bedrooms</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="0" {...field} />
+                  <Input 
+                    type="number" 
+                    min="0"
+                    placeholder="0" 
+                    {...field} 
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -170,7 +185,7 @@ export function AddListing() {
               <FormItem>
                 <FormLabel>Location</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter property location" {...field} />
+                  <Input placeholder="Enter property address" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -178,18 +193,16 @@ export function AddListing() {
           />
         </div>
 
-       
-
         {/* Images */}
         <FormField
           control={form.control}
           name="images"
-          render={({ field }: { field: ControllerRenderProps<AddListingFormValues, "images"> }) => (
+          render={({ field }) => (
             <FormItem>
-              <FormLabel>Images (Paste image URLs)</FormLabel>
+              <FormLabel>Image URLs</FormLabel>
               <div className="space-y-2">
                 {field.value.map((url, index) => (
-                  <div key={index} className="flex items-center space-x-2">
+                  <div key={index} className="flex items-center gap-2">
                     <Input
                       placeholder="https://example.com/image.jpg"
                       value={url}
@@ -207,6 +220,7 @@ export function AddListing() {
                         const newImages = field.value.filter((_, i) => i !== index);
                         field.onChange(newImages.length > 0 ? newImages : [""]);
                       }}
+                      disabled={field.value.length <= 1}
                     >
                       ✕
                     </Button>
@@ -225,7 +239,6 @@ export function AddListing() {
           )}
         />
 
-        {/* Submit Button */}
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Submitting..." : "Add Listing"}
         </Button>

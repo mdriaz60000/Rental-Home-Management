@@ -1,9 +1,11 @@
-// app/about/page.tsx
+
 import { Building2, Globe, Trophy, HeartHandshake,  Leaf } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
+
+  
   const stats = [
     { value: "10K+", label: "Happy Residents" },
     { value: "5K+", label: "Properties Listed" },

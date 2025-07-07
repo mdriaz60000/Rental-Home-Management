@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import StoreProvider from "@/providers/StoreProvider";
+import Providers from "@/providers/Provider";
+
 
 
 
@@ -27,21 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    
-   <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        
-        <Toaster position="top-center" />
-        <StoreProvider>
-        {children}
-        </StoreProvider>
-       
-
-      </body>
-    </html>
-    
- 
+    <Providers>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Toaster position="top-center" />
+          <StoreProvider>{children}</StoreProvider>
+        </body>
+      </html>
+    </Providers>
   );
 }
+

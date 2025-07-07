@@ -1,12 +1,12 @@
 "use client"
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useDeleteUserMutation, useGetAllUserQuery } from "@/redux/features/AdminApi/userApi";
+import {  useGetAllUserQuery } from "@/redux/features/AdminApi/userApi";
 import { IUser } from "@/type";
 
 const UserManagement = () => {
   const { data, isLoading, error } = useGetAllUserQuery(undefined);
   console.log(data)
-  const [deleteUser] = useDeleteUserMutation();
+
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading users</div>;

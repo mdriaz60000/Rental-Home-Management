@@ -2,6 +2,7 @@
 export interface IListing {
     _id: string;
     title: string;
+    landlordId: string;
     description: string;
     images: string[];
     rentAmount: number;

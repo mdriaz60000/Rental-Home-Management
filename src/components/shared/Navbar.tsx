@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { signOut } from "next-auth/react";
-import { Home, Building, User, LayoutDashboard, LogIn, LogOut } from "lucide-react";
+
+import { Home, Building, LayoutDashboard, LogIn, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,28 +10,40 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Logout, useCurrentUser } from "@/redux/features/auth/authSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { Logout } from "@/service/authService";
+import { useUser } from "@/context/UserContext";
+import { useRouter } from "next/navigation";
 
-interface UserData {
-  role?: "admin" | "landlord" | "tenant";
-  // Add other user properties here if needed
-}
+
+
+// interface UserData {
+//   role?: "admin" | "landlord" | "tenant" | "user";
+//   // Add other user properties here if needed
+// }
 
 const Navbar = () => {
-  const user = useAppSelector(useCurrentUser) as UserData | null;
-  const userRole = user?.role;
-  const dispatch = useAppDispatch();
+ 
+ 
+  const { user, setUser, isLoading,   } = useUser();
+  const router = useRouter();
+    if (isLoading) return null;
+
+ const userRole = user?.role as string
+
+const handleLogout = async () => {
+  await Logout();       
+  setUser(null);        
   
-  const handleLogout = () => {
-    dispatch(Logout());
-    signOut(); 
-  };
+  router.push("/login");
+};
+  
+
 
   // Determine dashboard label and link based on role
   const getDashboardInfo = () => {
     switch(userRole) {
       case "admin": return { label: "Admin", path: "/admin" };
+      case "user": return { label: "User", path: "/user" };
       case "landlord": return { label: "Landlord", path: "/landlord" };
       case "tenant": return { label: "Tenant", path: "/tenant" };
       default: return { label: "Dashboard", path: "/dashboard" };
@@ -61,7 +73,7 @@ const Navbar = () => {
               Contact Us
             </Link>
 
-            {userRole && ["admin", "landlord", "tenant"].includes(userRole) ? (
+            {userRole && ["admin", "landlord", "tenant","user"].includes(userRole) ? (
               <>
                 <Link 
                   href={getDashboardInfo().path}
@@ -71,23 +83,13 @@ const Navbar = () => {
                   {getDashboardInfo().label}
                 </Link>
 
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      <span>My Profile</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem 
+                                  <div
                       onClick={handleLogout}
-                      className="text-red-500 focus:text-red-500"
+                      className=" flex items-center text-primary focus:text-red-500"
                     >
                       <LogOut className="mr-2 h-4 w-4" />
                       Sign Out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                    </div>
               </>
             ) : (
               <Link 
@@ -139,7 +141,7 @@ const Navbar = () => {
                     Contact Us
                   </Link>
                 </DropdownMenuItem>
-                {userRole && ["admin", "landlord", "tenant"].includes(userRole) ? (
+                {userRole && ["admin", "landlord", "tenant", "user"].includes(userRole) ? (
                   <>
                     <DropdownMenuItem asChild>
                       <Link href={getDashboardInfo().path} className="flex items-center gap-2">

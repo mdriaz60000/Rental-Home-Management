@@ -9,14 +9,27 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
+
 export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-indigo-800 text-white p-4">
+    <div className="w-64 bg-primary text-secondary p-4">
       <h2 className="text-xl font-bold mb-6">Admin Dashboard</h2>
       <nav>
         <ul className="space-y-2">
+          <li>
+            <Link
+              href="/admin/overview"
+              className={`block p-2 rounded ${
+                pathname.startsWith('/admin/overview')
+                  ? 'bg-gray-700'
+                  : 'hover:bg-gray-700'
+              }`}
+            >
+              Overview
+            </Link>
+          </li>
           <li>
             <Link
               href="/admin/users"
@@ -41,14 +54,43 @@ export default function AdminSidebar() {
               Listing Management
             </Link>
           </li>
-          <br />
+         
           <li>
             <Link
+              href="/admin/listingRequest"
+              className={`block p-2 rounded ${
+                pathname.startsWith('/admin/listingRequest')
+                  ? 'bg-gray-700'
+                  : 'hover:bg-gray-700'
+              }`}
+            >
+              Listing Request
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/admin/message"
+              className={`block p-2 rounded ${
+                pathname.startsWith('/admin/message')
+                  ? 'bg-gray-700'
+                  : 'hover:bg-gray-700'
+              }`}
+            >
+              Message
+            </Link>
+          </li>
+          <br />
+          <li>
+  
+            <Link
+   
               href="/"
-              className={`block p-2 rounded hover:bg-gray-700`}
+              className={`block p-2 bg-secondary text-primary hover:text-red-500 rounded  `}
    
             >
-              Back To Home
+            
+              Back To Home 
+              
             </Link>
           </li>
           {/* <li>

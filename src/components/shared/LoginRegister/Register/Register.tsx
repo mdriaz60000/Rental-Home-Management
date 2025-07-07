@@ -1,67 +1,74 @@
-// app/register/page.tsx
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import Link from "next/link";
+import { toast } from "sonner";
+
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { toast } from "sonner";
-import Link from "next/link";
-import { useAppDispatch } from "@/redux/hooks";
-import { useRegisterMutation } from "@/redux/features/auth/authApi";
-import { setUser } from "@/redux/features/auth/authSlice";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import { formSchema } from "./registerValidation";
+import { registerUser } from "@/service/authService";
+import { useUser } from "@/context/UserContext";
 
 
-// Enhanced password validation
-const passwordValidation = z.string()
-  .min(6, "Password must be at least 6 characters")
-  // .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-  // .regex(/[a-z]/, "Must contain at least one lowercase letter")
-  // .regex(/[0-9]/, "Must contain at least one number")
-  // .regex(/[^A-Za-z0-9]/, "Must contain at least one special character");
-
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  password: passwordValidation,
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
 
 export default function Register() {
+const { refetch } = useUser();
   const router = useRouter();
-    const [register] = useRegisterMutation()
-    const dispatch = useAppDispatch();
-     const searchParams = useSearchParams();
-      const redirectUrl = searchParams.get('redirectUrl') || '/';
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get('redirectUrl') || '/';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
+      role: "user",
       password: "",
       confirmPassword: "",
     },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-  console.log(data)
-    const res = await register(data).unwrap()
-    
-
-    dispatch(setUser({user: res.data.accessUser, token: res.data.accessToken}))
-
-    
-      toast.success("Login Successful");
-      router.push(redirectUrl); 
+    try {
+      const res = await registerUser(data)
+      if (res.success) {
+      toast.success("Registration Successful");
+       await refetch?.()
+      router.push(redirectUrl);
+      }
+    } catch (error) {
+      toast.error("Registration failed. Please try again.");
+      console.log(error)
+    }
   }
 
   return (
@@ -104,6 +111,29 @@ export default function Register() {
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Role</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="h-12">
+                          <SelectValue placeholder="Select your role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="landlord">Landlord</SelectItem>
+                        <SelectItem value="tenant">Tenant</SelectItem>
+                        <SelectItem value="user">User</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
               <FormField
                 control={form.control}
@@ -121,7 +151,7 @@ export default function Register() {
                     </FormControl>
                     <FormMessage />
                     <div className="text-xs text-muted-foreground mt-1">
-                      Must contain: 8+ chars, uppercase, lowercase, number, special char
+                      Must be at least 6 characters
                     </div>
                   </FormItem>
                 )}
@@ -156,33 +186,7 @@ export default function Register() {
             </form>
           </Form>
 
-          <div className="my-6 flex items-center">
-            <Separator className="flex-1" />
-            <span className="px-4 text-sm text-muted-foreground">OR</span>
-            <Separator className="flex-1" />
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <Button 
-              variant="outline" 
-              className="h-12 gap-2"
-             
-            >
-              {/* <Google className="h-5 w-5" /> */}
-              Continue with Google
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              className="h-12 gap-2"
-            
-            >
-              {/* <Github className="h-5 w-5" /> */}
-              Continue with GitHub
-            </Button>
-          </div>
-
-          <div className="mt-6 text-center text-sm">
+            <div className="mt-6 text-center text-sm">
             Already have an account?{" "}
             <Link 
               href="/login" 
@@ -191,6 +195,23 @@ export default function Register() {
               Sign in
             </Link>
           </div>
+
+          <div className="my-6 flex items-center">
+            <Separator className="flex-1" />
+            <span className="px-4 text-sm text-muted-foreground">OR</span>
+            <Separator className="flex-1" />
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <Button variant="outline" className="h-12 gap-2">
+              Continue with Google
+            </Button>
+            <Button variant="outline" className="h-12 gap-2">
+              Continue with GitHub
+            </Button>
+          </div>
+
+
         </CardContent>
       </Card>
     </div>

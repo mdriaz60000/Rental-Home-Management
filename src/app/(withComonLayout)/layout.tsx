@@ -1,10 +1,13 @@
 import Footer from "@/components/shared/Footer";
- import Navbar from "@/components/shared/Navbar";
+import NavbarPage from "./navbar/page";
+ 
 
-const CommonLayout = ({ children }: { children: React.ReactNode }) => {
+
+const CommonLayout = async  ({ children }: { children: React.ReactNode }) => {
+
   return (
     <>
-      <Navbar />
+      <NavbarPage />
       <main className="">{children}</main>
       <Footer />
     </>

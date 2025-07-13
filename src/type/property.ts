@@ -2,10 +2,10 @@ export interface Property {
     _id: string;
     title: string;
     location: string;
-    rentAmount: number;
+    rentAmount: string;
     description: string;
-    bedrooms?: number;
-    numberOfBedrooms?: number; // If you're using this somewhere
-    squareFeet: number;
+    bedrooms?: string;
+    numberOfBedrooms?: string; // If you're using this somewhere
+    squareFeet: string;
     RepresentativeImages: string;
   }

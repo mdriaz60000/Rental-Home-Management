@@ -56,7 +56,7 @@ const ListingsDetails = ({listings}: {listings: IListing}) => {
             </div>
           </div>
           <Badge className="bg-primary text-white text-lg px-3 py-1">
-            ${listings.rentAmount.toLocaleString()}/mo
+            ${listings.rentAmount}/mo
           </Badge>
         </div>
 

@@ -3,10 +3,10 @@ export type MyListing = {
   _id: string;
   title: string;
   description: string;
-  squareFeet: number;
+  squareFeet: string;
   location: string;
-  rentAmount: number;
-  bedrooms: number;
+  rentAmount: string;
+  bedrooms: string;
   amenities: string[];
   images: string[];
   createdAt: string;

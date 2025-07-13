@@ -57,14 +57,14 @@ export default function AdminSidebar() {
          
           <li>
             <Link
-              href="/admin/listingRequest"
+              href="/admin/rentalRequest"
               className={`block p-2 rounded ${
                 pathname.startsWith('/admin/listingRequest')
                   ? 'bg-gray-700'
                   : 'hover:bg-gray-700'
               }`}
             >
-              Listing Request
+             Rental Request
             </Link>
           </li>
           <li>

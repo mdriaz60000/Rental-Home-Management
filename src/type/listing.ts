@@ -5,9 +5,9 @@ export interface IListing {
     landlordId: string;
     description: string;
     images: string[];
-    rentAmount: number;
-    squareFeet: number;
-    bedrooms: number;
+    rentAmount: string;
+    squareFeet: string;
+    bedrooms: string;
     amenities: string[];
     location: string;
     status: "pending" | "approved" | "rejected"; // or string if you have more statuses

@@ -1,3 +1,4 @@
+
 import ListingsDetails from '@/components/shared/PopulerListings/ListingsDetails';
 import React from 'react';
 
@@ -9,7 +10,8 @@ const page = async ({params}: {params: Promise<{listingId: string}>} ) => {
     )
     const listing = await res.json()
     const listings = listing.data
-    
+
+   
  
      
     return (

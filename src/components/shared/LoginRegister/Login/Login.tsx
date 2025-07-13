@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+    import { UserCog, Building2 } from "lucide-react"; 
 import { useRouter, useSearchParams } from "next/navigation";
 import { 
   Form,
@@ -33,6 +34,17 @@ const formSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+const demoUsers = {
+  admin: {
+    email: "riz@gmail.com",
+    password: "202020",
+  },
+  landlord: {
+    email: "sumon@gmail.com",
+    password: "202020",
+  },
+};
 
 export default function Login() {
 
@@ -78,9 +90,53 @@ export default function Login() {
           </CardDescription>
         </CardHeader>
         
+   {/*  Demo Login Buttons */}
+  
+
+<div className="flex flex-col gap-4 px-2 md:px-4 mb-1">
+  <p className="text-center text-muted-foreground text-sm tracking-wide">
+    Use demo login
+  </p>
+  <div className="grid grid-cols-2 gap-3">
+    <Button
+      type="button"
+      variant="outline"
+      className="h-11 rounded-xl border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 gap-2 group"
+      onClick={async () => {
+        form.setValue("email", demoUsers.admin.email);
+        form.setValue("password", demoUsers.admin.password);
+        await form.handleSubmit(onSubmit)(); 
+      }}
+    >
+      <UserCog
+        className="w-4 h-4 text-primary group-hover:text-white transition-all duration-300"
+      />
+      Admin Demo
+    </Button>
+
+    <Button
+      type="button"
+      variant="outline"
+      className="h-11 rounded-xl border border-primary text-primary hover:bg-primary hover:text-white transition-colors duration-300 gap-2 group"
+      onClick={async () => {
+        form.setValue("email", demoUsers.landlord.email);
+        form.setValue("password", demoUsers.landlord.password);
+        await form.handleSubmit(onSubmit)(); // auto submit
+      }}
+    >
+      <Building2
+        className="w-4 h-4 text-primary group-hover:text-white transition-all duration-300"
+      />
+      Landlord Demo
+    </Button>
+  </div>
+</div>
+
+
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+
               <FormField
                 control={form.control}
                 name="email"

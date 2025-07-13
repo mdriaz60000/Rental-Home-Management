@@ -6,8 +6,8 @@ export default function LandlordSidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="w-64 bg-primary text-secondary p-4">
-      <h2 className="text-xl font-bold mb-6">Landlord Dashboard</h2>
+    <div className="w-30 md:w-64 bg-primary text-secondary py-4">
+      <h2 className="md:text-xl px-1 font-bold mb-6">Dashboard</h2>
       <nav>
         <ul className="space-y-2">
           <li>
@@ -46,18 +46,7 @@ export default function LandlordSidebar() {
               My Listings
             </Link>
           </li>
-          <li>
-            <Link
-              href="/landlord/rentalRequest"
-              className={`block p-2 rounded ${
-                pathname.startsWith('/landlord/requests') 
-                  ? 'bg-indigo-700' 
-                  : 'hover:bg-indigo-700'
-              }`}
-            >
-              Rental Requests
-            </Link>
-          </li>
+
           <br />
           <li>
             <Link

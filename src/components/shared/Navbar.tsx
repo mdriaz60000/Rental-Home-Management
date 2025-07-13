@@ -69,6 +69,10 @@ const handleLogout = async () => {
             <Link href="/about" className="text-sm font-medium hover:text-primary transition-colors">
               About Us
             </Link>
+            
+            <Link href="/allListings" className="text-sm font-medium hover:text-primary transition-colors">
+              All Listings
+            </Link>
             <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
               Contact Us
             </Link>

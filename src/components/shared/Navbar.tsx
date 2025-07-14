@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { Home, Building, LayoutDashboard, LogIn, LogOut } from "lucide-react";
+import { Home,  LayoutDashboard, LogIn, LogOut, HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -56,7 +56,7 @@ const handleLogout = async () => {
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Building className="h-6 w-6 text-primary" />
+            <HomeIcon className="h-6 w-6 text-primary" />
             <span className="text-xl font-bold">RentalHomes</span>
           </Link>
 

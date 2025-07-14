@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { IListing } from "@/type";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,7 +20,6 @@ const ListingManagement = ({ listings }: any) => {
   }, [listings]);
 
   const handleDelete = async (id: string) => {
-    console.log("Delete ID:", id);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_API}/listingsDelete/${id}`,
@@ -31,14 +31,9 @@ const ListingManagement = ({ listings }: any) => {
         }
       );
       const data = await res.json();
-      console.log("Delete response:", data);
-
       if (data?.success) {
         alert("Deleted successfully");
-
-        setLocalListings((prevListings) =>
-          prevListings.filter((listing) => listing._id !== id)
-        );
+        setLocalListings((prev) => prev.filter((item) => item._id !== id));
       }
     } catch (error) {
       console.log("Error deleting listing:", error);
@@ -47,62 +42,92 @@ const ListingManagement = ({ listings }: any) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">
+      <h1 className="text-3xl font-bold text-gray-800 mb-6">
         Property Listings Management
       </h1>
 
-      {loading ? (
-        <div className="text-center text-gray-500">Loading...</div>
-      ) : localListings.length === 0 ? (
-        <div className="text-center text-gray-500">No listings found.</div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {localListings.map((listing: IListing) => (
-            <div
-              key={listing._id}
-              className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200"
-            >
-              {/* Image */}
-              {listing?.images?.[0] && (
-                <div className="relative h-48 w-full">
-                  <Image
-                    src={listing.images[0]}
-                    alt={listing.title || "Property Image"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+      <div className="overflow-x-auto rounded-lg shadow border border-gray-200">
+        <table className="min-w-full text-sm text-left">
+          <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
+            <tr>
+              <th className="px-4 py-3">Image</th>
+              <th className="px-4 py-3">Title</th>
+              <th className="px-4 py-3">Location</th>
+              <th className="px-4 py-3">Rent</th>
+              <th className="px-4 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y">
+            {loading
+              ? Array.from({ length: 3 }).map((_, index) => (
+                  <tr key={index}>
+                    <td className="px-4 py-3">
+                      <Skeleton className="w-20 h-16 rounded" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <Skeleton className="h-4 w-32 rounded" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <Skeleton className="h-4 w-24 rounded" />
+                    </td>
+                    <td className="px-4 py-3">
+                      <Skeleton className="h-4 w-16 rounded" />
+                    </td>
+                    <td className="px-4 py-3 text-center space-x-2">
+                      <Skeleton className="h-8 w-20 inline-block rounded" />
+                      <Skeleton className="h-8 w-20 inline-block rounded" />
+                    </td>
+                  </tr>
+                ))
+              : localListings.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-center py-6 text-gray-500">
+                    No listings found.
+                  </td>
+                </tr>
+              ) : (
+                localListings.map((listing) => (
+                  <tr key={listing._id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3">
+                      {listing?.images?.[0] ? (
+                        <div className="w-20 h-16 relative">
+                          <Image
+                            src={listing.images[0]}
+                            alt={listing.title}
+                            fill
+                            className="object-cover rounded"
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">No image</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 font-medium">{listing.title}</td>
+                    <td className="px-4 py-3">{listing.location}</td>
+                    <td className="px-4 py-3 text-green-700 font-semibold">
+                      ${Number(listing.rentAmount)}
+                    </td>
+                    <td className="px-4 py-3 text-center space-x-2">
+                      <Link href={`/listings/${listing._id}`}>
+                        <Button size="sm" className="bg-primary text-white hover:bg-primary">
+                          Details
+                        </Button>
+                      </Link>
+                      <Button
+                        size="sm"
+                        className="bg-red-600 text-white hover:bg-red-700"
+                        onClick={() => handleDelete(listing._id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))
               )}
-
-              {/* Content */}
-              <div className="p-4">
-                <h2 className="text-xl font-semibold text-gray-900 mb-1">
-                  {listing.title}
-                </h2>
-                <p className="text-sm text-gray-600 mb-2">{listing.location}</p>
-                <p className="text-lg font-medium text-green-700 mb-4">
-                  Rent: ${Number(listing.rentAmount)}
-                </p>
-
-                <div className="flex gap-3">
-                  <Link href={`/listings/${listing._id}`}>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                      Details
-                    </Button>
-                  </Link>
-
-                  <Button
-                    onClick={() => handleDelete(listing._id)}
-                    className="bg-red-600 hover:bg-red-700 text-white"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

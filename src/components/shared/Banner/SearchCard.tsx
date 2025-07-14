@@ -10,8 +10,6 @@ import React from "react";
 const SearchCard = ({listing }: {listing: IListing}) => {
 
 
-
-
   return (
            <div  className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                {/* Property Image - You might want to add a default image if img is not available */}

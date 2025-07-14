@@ -11,7 +11,7 @@ export default function AdminListingsPage() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/listings`);
         const result = await res.json();
-        console.log("Fetched listings:", result); // ✅ লগ করে দেখো
+        console.log("Fetched listings:", result); 
         setListings(result.data);
       } catch (error) {
         console.error("Failed to fetch listings:", error);

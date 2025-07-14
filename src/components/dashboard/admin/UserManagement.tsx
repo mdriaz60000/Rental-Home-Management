@@ -1,14 +1,43 @@
 "use client"
+import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {  useGetAllUserQuery } from "@/redux/features/AdminApi/userApi";
 import { IUser } from "@/type";
 
 const UserManagement = () => {
   const { data, isLoading, error } = useGetAllUserQuery(undefined);
-  console.log(data)
 
 
-  if (isLoading) return <div>Loading...</div>;
+
+ if (isLoading) {
+  return (
+    <div className="overflow-x-auto">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">Name</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Update</TableHead>
+            <TableHead>Delete</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <TableRow key={i}>
+              <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-36" /></TableCell>
+              <TableCell><Skeleton className="h-8 w-16 rounded" /></TableCell>
+              <TableCell><Skeleton className="h-8 w-16 rounded" /></TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
   if (error) return <div>Error loading users</div>;
 
   const filteredUsers = data?.data?.filter((user: IUser) => user.role !== "admin") || [];
